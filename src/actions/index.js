@@ -3,7 +3,8 @@ import firebase from 'firebase';
 //action creator -> handling user typing sth in loginform
 import { 
     EMAIL_CHANGED,
-    PASSWORD_CHANGED
+    PASSWORD_CHANGED,
+    LOGIN_USER_SUCCESS
  } from './types';
 
 
@@ -29,7 +30,7 @@ export const loginUser = ({email, password}) => {
     //실제 로그인하는 부분
     firebase.auth().signInWithEmailAndPassword(email, password)
         .then(user => {
-            dispatch({ type: 'LOGIN_USER_SUCCESS', payload: user });
+            dispatch({ type: LOGIN_USER_SUCCESS, payload: user });
         });
     };
 };
