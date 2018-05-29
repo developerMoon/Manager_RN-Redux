@@ -4,7 +4,8 @@ import firebase from 'firebase';
 import { 
     EMAIL_CHANGED,
     PASSWORD_CHANGED,
-    LOGIN_USER_SUCCESS
+    LOGIN_USER_SUCCESS,
+    LOGIN_USER_FAIL
  } from './types';
 
 
@@ -29,8 +30,25 @@ export const loginUser = ({email, password}) => {
     //request to firebase server
     //실제 로그인하는 부분
     firebase.auth().signInWithEmailAndPassword(email, password)
-        .then(user => {
-            dispatch({ type: LOGIN_USER_SUCCESS, payload: user });
+        .then(user => loginUserSuccess(dispatch, user))
+        //로그인에 실패할 경우
+        .catch(()=>{
+            //새로 아이디 만들고 로그인시키기
+            firebase.auth().createUserWithEmailAndPassword(email, password)
+            .then(user => loginUserSuccess(dispatch, user))
+            //로그인에 실패할 경우
+            .catch(() => loginUserFail(dispatch));
         });
     };
+};
+
+const loginUserFail = (dispatch) => {
+    dispatch({ type: LOGIN_USER_FAIL });
+};
+
+const loginUserSuccess = (dispatch, user) => {
+    dispatch({
+        type: LOGIN_USER_SUCCESS,
+        payload: user
+    });
 };
