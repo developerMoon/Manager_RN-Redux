@@ -1,5 +1,5 @@
 import firebase from 'firebase';
-
+import { Actions } from 'react-native-router-flux';
 //action creator -> handling user typing sth in loginform
 import { 
     EMAIL_CHANGED,
@@ -52,9 +52,13 @@ const loginUserFail = (dispatch) => {
     dispatch({ type: LOGIN_USER_FAIL });
 };
 
+//where we know user successfully logged in
+//navigate user from loginform -> employeelist
 const loginUserSuccess = (dispatch, user) => {
     dispatch({
         type: LOGIN_USER_SUCCESS,
         payload: user
     });
+    //Actions.[scene name] -> navigate to that scene
+    Actions.main(); //automatically generate back button
 };
