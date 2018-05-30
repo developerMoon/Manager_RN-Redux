@@ -5,7 +5,8 @@ import {
     EMAIL_CHANGED,
     PASSWORD_CHANGED,
     LOGIN_USER_SUCCESS,
-    LOGIN_USER_FAIL
+    LOGIN_USER_FAIL,
+    LOGIN_USER
  } from './types';
 
 
@@ -24,16 +25,21 @@ export const passwordChanged = (text) => {
 };
 
 //new action creator
-export const loginUser = ({email, password}) => {
+export const loginUser = ({ email, password }) => {
     return (dispatch) => { //check diagram
     //by giving access to dispatch, we can call dispatch whenever we want
     //request to firebase server
     //실제 로그인하는 부분
+
+    dispatch({ type: LOGIN_USER });
+
     firebase.auth().signInWithEmailAndPassword(email, password)
         .then(user => loginUserSuccess(dispatch, user))
         //로그인에 실패할 경우
-        .catch(()=>{
+        .catch((error)=>{
+            console.log(error);
             //새로 아이디 만들고 로그인시키기
+ 
             firebase.auth().createUserWithEmailAndPassword(email, password)
             .then(user => loginUserSuccess(dispatch, user))
             //로그인에 실패할 경우
