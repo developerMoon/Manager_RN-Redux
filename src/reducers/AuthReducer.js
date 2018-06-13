@@ -16,7 +16,7 @@ const INITIAL_STATE = {
 };
 
 export default ( state = INITIAL_STATE, action ) => { 
-    console.log(action);
+    //console.log(action);
 
     //redux will compare present status and previous status -> update
     switch (action.type) { //let it watch email change
